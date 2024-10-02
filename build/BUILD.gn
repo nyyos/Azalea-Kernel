@@ -1,0 +1,3 @@
+if (target_cpu == "") {
+  target_cpu = "x64"
+}

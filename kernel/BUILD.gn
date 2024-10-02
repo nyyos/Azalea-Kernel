@@ -1,0 +1,85 @@
+import("params.gni")
+
+executable("azalea") {
+  configs = [
+    "//kernel:kernel_config"
+  ]
+
+  ldflags = [
+    "-nostdlib",
+    "-static",
+    "-Wl,-gc-sections",
+    "-Wl,-zmax-page-size=0x1000",
+    "-Wl,-T," + rebase_path("kernel.ld", root_build_dir),
+  ]
+
+  output_name = "azalea"
+  output_extension = "elf"
+
+  sources = [ "main.cpp" ]
+  inputs = [ "kernel.ld" ]
+
+  deps = []
+}
+
+config("kernel_config") {
+  ldflags = []
+  defines = []
+
+  cflags = [
+    "-fno-strict-aliasing",
+    "-fwrapv",
+    "-fno-delete-null-pointer-checks",
+    "-fno-omit-frame-pointer",
+    "-nostdinc",
+    "-ffreestanding",
+    "-fno-PIC",
+    "-fno-lto",
+    "-ffunction-sections",
+    "-fdata-sections",
+    "-fvisibility=hidden",
+    "-fno-stack-protector",
+    "-fno-stack-check",
+  ]
+
+  cflags += [ "-Wno-comment" ]
+
+  if (target_cpu == "x64") {
+    cflags += [
+      "--target=x86_64-elf",
+      "-m64",
+      "-march=x86-64",
+      "-mabi=sysv",
+      "-mno-80387",
+      "-mno-mmx",
+      "-mno-sse",
+      "-mno-sse2",
+      "-mno-red-zone",
+      "-mcmodel=kernel",
+    ]
+
+    defines += [ "X64" ]
+  }
+
+  cflags_cc = [
+    "-fno-rtti",
+    "-fno-exceptions",
+    "-fsized-deallocation",
+    "-fno-unwind-tables",
+    "-fno-asynchronous-unwind-tables",
+  ]
+
+  kernel_defines = [ "KERNEL_BASE=$kernel_base" ]
+
+  defines += [ "ARCHNAME=$target_cpu" ]
+  defines += [ "__KERNEL__" ]
+  defines += kernel_defines
+
+  visibility = [ ":*" ]
+  foreach(assignment, kernel_defines) {
+    ldflags += [ "-Wl,--defsym,$assignment" ]
+  }
+}
+
+config("kernel_defsym") {
+}

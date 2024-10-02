@@ -1,0 +1,3 @@
+group("kernel") {
+  deps = [ "//kernel:azalea" ]
+}
