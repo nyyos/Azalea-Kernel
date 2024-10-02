@@ -1,25 +1,34 @@
 toolchain("clang") {
-  tool("cc") {
+  _compile_common = {
     depfile = "{{output}}.d"
-    command = "clang -MMD -MF $depfile {{defines}} {{include_dirs}} {{cflags}} {{cflags_c}} -c {{source}} -o {{output}}"
     depsformat = "gcc"
-    description = "CC {{output}}"
+    switches = "-MD -MF $depfile -o {{output}} {{defines}} {{include_dirs}}"
     outputs =
         [ "{{source_out_dir}}/{{target_output_name}}.{{source_name_part}}.o" ]
+  }
+
+
+  tool("cc") {
+    description = "CC {{output}}"
+    forward_variables_from(_compile_common, "*")
+    command = "clang $switches {{cflags}} {{cflags_c}} -c {{source}} -o {{output}}"
   }
 
   tool("cxx") {
-    depfile = "{{output}}.d"
-    command = "clang++ -MMD -MF $depfile {{defines}} {{include_dirs}} {{cflags}} {{cflags_cc}} -c {{source}} -o {{output}}"
-    depsformat = "gcc"
     description = "CXX {{output}}"
-    outputs =
-        [ "{{source_out_dir}}/{{target_output_name}}.{{source_name_part}}.o" ]
+    forward_variables_from(_compile_common, "*")
+    command = "clang++ $switches {{cflags}} {{cflags_cc}} -c {{source}} -o {{output}}"
+  }
+
+  tool("asm") {
+    description = "ASM {{output}}"
+    forward_variables_from(_compile_common, "*")
+    command = "clang $switches {{asmflags}} -c {{source}}"
   }
 
   tool("alink") {
-    command = "ar rcs {{output}} {{inputs}}"
     description = "AR {{target_output_name}}{{output_extension}}"
+    command = "ar rcs {{output}} {{inputs}}"
     outputs =
         [ "{{target_out_dir}}/{{target_output_name}}{{output_extension}}" ]
     default_output_extension = ".a"
