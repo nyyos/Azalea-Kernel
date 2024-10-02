@@ -8,15 +8,12 @@ PHDRS
     text PT_LOAD;
     rodata PT_LOAD;
     data PT_LOAD;
+    dynamic PT_LOAD;
 }
 
 SECTIONS
 {
-    /* We wanna be placed in the topmost 2GiB of the address space, for optimisations */
-    /* and because that is what the Limine spec mandates. */
-    /* Any address in this region will do, but often 0xffffffff80000000 is chosen as */
-    /* that is the beginning of the region. */
-    . = KERNEL_BASE;
+    . = 0;
 
     PROVIDE_HIDDEN(addr_text_start = .);
 

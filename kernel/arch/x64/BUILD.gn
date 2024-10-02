@@ -1,0 +1,3 @@
+source_set("x64") {
+  sources = [ "entry.S" ]
+}

@@ -1,13 +1,11 @@
 import("params.gni")
 
 executable("azalea") {
-  configs = [
-    "//kernel:kernel_config"
-  ]
+  configs = [ "//kernel:kernel_config" ]
 
   ldflags = [
     "-nostdlib",
-    "-static",
+    "-pie",
     "-Wl,-gc-sections",
     "-Wl,-zmax-page-size=0x1000",
     "-Wl,-T," + rebase_path("kernel.ld", root_build_dir),
@@ -19,7 +17,7 @@ executable("azalea") {
   sources = [ "main.cpp" ]
   inputs = [ "kernel.ld" ]
 
-  deps = []
+  deps = [ "//kernel/arch/$target_cpu" ]
 }
 
 config("kernel_config") {
@@ -33,7 +31,7 @@ config("kernel_config") {
     "-fno-omit-frame-pointer",
     "-nostdinc",
     "-ffreestanding",
-    "-fno-PIC",
+    "-fPIE",
     "-fno-lto",
     "-ffunction-sections",
     "-fdata-sections",
