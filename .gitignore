@@ -1,7 +1,6 @@
-out/
-*.o
-*.elf
-*.iso
-*.d
-.cache/
+.cache
 qemulog.txt
+.config*
+subprojects/*
+!subprojects/*.wrap
+!subprojects/packagefiles

@@ -1,7 +1,0 @@
-source_set("kernel") {
-  sources = [
-    "main.cc"
-  ]
-
-  configs = ["//kernel:headers"]
-}

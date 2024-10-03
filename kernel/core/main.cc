@@ -1,0 +1,8 @@
+namespace core
+{
+
+void kinit()
+{
+}
+
+}

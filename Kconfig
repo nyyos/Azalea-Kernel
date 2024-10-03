@@ -1,0 +1,19 @@
+mainmenu "Azalea Kernel configuration"
+
+menu "Sanitizers"
+
+config DISABLE_ASSERTS
+  bool "Disable asserts in code"
+  default n
+
+config UBSAN
+  bool "Enable UBSAN"
+  default y
+
+config STACKGUARD
+  bool "Enable stack protector"
+  default y
+
+endmenu
+
+source "$(ROOT)/kernel/Kconfig"
