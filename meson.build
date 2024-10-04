@@ -62,6 +62,7 @@ endif
 
 if conf.get('CONFIG_UBSAN', 'n') == 'y'
   freestanding_c_args += '-fsanitize=undefined' 
+  freestanding_c_args += '-fsanitize=signed-integer-overflow'
 endif
 
 use_limine = false

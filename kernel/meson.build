@@ -1,5 +1,6 @@
 kernel_ld_args = ['-nostdlib', '-Wl,-gc-sections']
 
+subdir('libkern')
 subdir('core')
 
 if (use_limine)

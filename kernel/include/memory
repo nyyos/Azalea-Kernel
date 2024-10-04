@@ -1,0 +1,39 @@
+#pragma once
+
+#include <cstddef>
+
+#include_next <memory>
+
+#include <mm/kmem.h>
+
+namespace std
+{
+template <typename Type> struct allocator {
+	using value_type = Type;
+	using size_type = std::size_t;
+	using difference_type = std::ptrdiff_t;
+
+	constexpr allocator() noexcept = default;
+
+	template <typename U>
+	constexpr allocator(const allocator<U> &other) noexcept
+	{
+	}
+
+	[[nodiscard]] constexpr Type *allocate(size_t size)
+	{
+		return static_cast<Type *>(core::mm::kmalloc(size * sizeof(Type)));
+	}
+
+	constexpr void deallocate(Type *ptr, size_t size)
+	{
+		core::mm::kfree(ptr, size * sizeof(Type));
+	}
+
+	friend constexpr bool operator==(const allocator &,
+					 const allocator &) noexcept
+	{
+		return true;
+	}
+};
+}
