@@ -1,15 +1,19 @@
 #!/bin/bash
+source "$(dirname "$0")/common.sh"
 
 PORT=amd64
+OVMF_URL="https://github.com/limine-bootloader/edk2-ovmf-nightly/releases/latest/download"
 
 qemu_command="${QEMU_EXE:=qemu-system-x86_64}"
 print_command=0
+uefi=0
 qemu_mem="${QEMU_MEM:=256M}"
 qemu_smp="${QEMU_SMP:=2}"
 qemu_args=
 iso="build-${PORT}/azalea-amd64-limine.iso"
+ovmf="build-${PORT}/ovmf"
 
-while getopts "kngspHuQGq:10" optchar; do
+while getopts "kngspHuUQGq:10" optchar; do
 	case $optchar in
 	s) qemu_args="$qemu_args -serial stdio" ;;
 	k) qemu_args="$qemu_args -enable-kvm -cpu host" ;;
@@ -22,10 +26,19 @@ while getopts "kngspHuQGq:10" optchar; do
 		echo "!! Exit QEMU with Ctrl+A then X"
 		;;
 	u) iso="build-${PORT}/azalea-${PORT}-hyper.iso" ;;
+	U) uefi=1 ;;
 	H) qemu_args="$qemu_args -machine hpet=off" ;;
 	*) exit 1 ;;
 	esac
 done
+
+if [[ $uefi -eq 1 ]]; then
+	mkdir -p "$ovmf"
+	fetch "$ovmf/ovmf-code-${PORT}.fd" "${OVMF_URL}/ovmf-code-x86_64.fd"
+	fetch "$ovmf/ovmf-vars-${PORT}.fd" "${OVMF_URL}/ovmf-vars-x86_64.fd"
+	qemu_args="$qemu_args -drive if=pflash,unit=0,format=raw,file=$ovmf/ovmf-code-${PORT}.fd,readonly=on"
+	qemu_args="$qemu_args -drive if=pflash,unit=1,format=raw,file=$ovmf/ovmf-vars-${PORT}.fd"
+fi
 
 qemu_args="$qemu_args -s"
 qemu_args="$qemu_args -no-shutdown -no-reboot"

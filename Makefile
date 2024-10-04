@@ -17,6 +17,10 @@ run:
 	./tools/mkiso-$(ARCH).sh
 	./tools/run-$(ARCH).sh -sk
 
+run-uefi:
+	./tools/mkiso-$(ARCH).sh
+	./tools/run-$(ARCH).sh -skU
+
 run-hyper:
 	./tools/mkiso-$(ARCH)-hyper.sh
 	./tools/run-$(ARCH).sh -sku

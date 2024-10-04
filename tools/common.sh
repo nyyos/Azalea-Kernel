@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export LANG=c
+
 fetch ()
 {
 	local OPTIND=1

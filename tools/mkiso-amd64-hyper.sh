@@ -1,7 +1,5 @@
 #!/bin/sh
 
-export LANG=c
-
 source "$(dirname "$0")/common.sh"
 
 PORT=amd64
