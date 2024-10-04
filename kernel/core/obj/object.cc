@@ -24,8 +24,14 @@ void Object::release(int freeWhen)
 		free();
 }
 
-void Object::free() {
+void Object::free()
+{
 	delete this;
+}
+
+bool Object::init()
+{
+	return true;
 }
 
 };

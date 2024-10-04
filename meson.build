@@ -113,6 +113,8 @@ else
   error('\n\tbad arch')
 endif
 
+freestanding_c_args += ['-DARCHNAME="' + arch +'"']
+
 freestanding_cpp_args = [
   freestanding_c_args,
   '-fno-rtti',
@@ -121,8 +123,6 @@ freestanding_cpp_args = [
   '-fno-unwind-tables',
   '-fno-asynchronous-unwind-tables'
 ]
-
-freestanding_c_args += ['-DARCHNAME="' + arch +'"']
 
 kernel_sources = []
 freestanding_include_dirs = []

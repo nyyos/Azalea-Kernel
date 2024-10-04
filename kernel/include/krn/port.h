@@ -1,3 +1,5 @@
 #pragma once
 
-#error "impl"
+#ifdef AMD64
+#include <krn/ports/amd64.h>
+#endif

@@ -5,3 +5,5 @@ kernel_ld_args += [
 ]
 
 kernel_sources += files('entry.S')
+
+kernel_sources += files('plat.cc')
