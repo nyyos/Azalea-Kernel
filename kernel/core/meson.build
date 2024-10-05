@@ -1,4 +1,4 @@
-kernel_sources += files('main.cc')
+kernel_sources += files('main.cc', 'crash.cc')
 
 subdir('obj')
 subdir('log')

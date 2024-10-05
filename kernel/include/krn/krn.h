@@ -23,4 +23,6 @@ static inline CpuData &curcpu()
 }
 #endif
 
+void crash(const char *msg);
+
 }

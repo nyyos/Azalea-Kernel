@@ -1,3 +1,4 @@
+#include "log/log.h"
 #include <mm/kmem.h>
 #include <rtl/assert.h>
 
@@ -13,6 +14,7 @@ std::size_t pos;
 void *kmalloc(std::size_t size)
 {
 	assert(size < ARENA_SIZE - pos);
+	printk("kmalloc called\n");
 	auto ret = &arena[pos];
 	pos += size;
 	return (void *)ret;
@@ -20,6 +22,7 @@ void *kmalloc(std::size_t size)
 
 void kfree(void *ptr, std::size_t size)
 {
+	printk("kfree called\n");
 	// NOOP
 }
 }

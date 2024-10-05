@@ -17,4 +17,16 @@ namespace core ::port
 
 struct PortLocalData {};
 
+[[noreturn]] static inline void hcf(const bool disableInterrupts = false)
+{
+	if (disableInterrupts) {
+		while (true)
+			asm volatile("cli;hlt");
+	} else {
+		while (true)
+			asm volatile("hlt");
+	}
+	__builtin_unreachable();
+}
+
 }

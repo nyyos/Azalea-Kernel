@@ -144,4 +144,5 @@ if(use_limine)
   )
 endif
 
+subdir('tools')
 subdir('kernel')

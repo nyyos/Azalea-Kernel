@@ -1,3 +1,4 @@
+#include "krn/krn.h"
 #include <lk/lock.h>
 #include <lk/spinlock.h>
 #include <lk/string.h>
@@ -16,10 +17,15 @@ void kinit()
 	auto lock = lk::Spinlock();
 	lk::string s;
 	s += "teST";
-	printk(INFO "TEST! New kernel\n");
+	printk(INFO "TEST! New kernel in C++ %s\n", s.c_str());
 	printk(INFO "percpu size: %ld\n", __cpulocals_end - __cpulocals_start);
+	{
+		lock.lock();
+		auto guard = lk::lock_guard(lock, lk::adopt_lock_t{});
+	}
 	lock.lock();
-	lock.lock();
+
+	crash("end of kernel reached");
 }
 
 }

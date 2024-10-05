@@ -31,12 +31,13 @@ template <BasicLockable Mutex> class lock_guard {
 	using mutex_type = Mutex;
 
 	[[nodiscard]] explicit lock_guard(mutex_type &mutex)
-		: mutex_(mutex)
+		: m_mutex(mutex)
 	{
-		mutex_.lock();
+		m_mutex.lock();
 	};
 
 	[[nodiscard]] lock_guard(mutex_type &mutex, adopt_lock_t t)
+		: m_mutex(mutex)
 	{
 	}
 
@@ -46,11 +47,11 @@ template <BasicLockable Mutex> class lock_guard {
 
 	~lock_guard()
 	{
-		mutex_.unlock();
+		m_mutex.unlock();
 	}
 
     private:
-	mutex_type &mutex_;
+	mutex_type &m_mutex;
 };
 
 template <BasicLockable Mutex> class unique_lock {
@@ -60,38 +61,38 @@ template <BasicLockable Mutex> class unique_lock {
 	friend void swap(unique_lock &u, unique_lock &v)
 	{
 		using std::swap;
-		swap(u.mutex_, v.mutex_);
-		swap(u.is_locked_, v.is_locked_);
+		swap(u.m_mutex, v.m_mutex);
+		swap(u.m_is_locked, v.m_is_locked);
 	}
 
 	unique_lock()
-		: mutex_{ nullptr }
-		, is_locked_{ false }
+		: m_mutex{ nullptr }
+		, m_is_locked{ false }
 	{
 	}
 
 	[[nodiscard]] explicit unique_lock(mutex_type &mutex)
-		: mutex_{ &mutex }
-		, is_locked_{ false }
+		: m_mutex{ &mutex }
+		, m_is_locked{ false }
 	{
-		mutex_->lock();
+		m_mutex->lock();
 	}
 
 	[[nodiscard]] unique_lock(mutex_type &mutex, adopt_lock_t t)
-		: mutex_{ &mutex }
-		, is_locked_{ true }
+		: m_mutex{ &mutex }
+		, m_is_locked{ true }
 	{
 	}
 
 	[[nodiscard]] unique_lock(mutex_type &mutex, defer_lock_t t)
-		: mutex_{ &mutex }
-		, is_locked_{ false }
+		: m_mutex{ &mutex }
+		, m_is_locked{ false }
 	{
 	}
 
 	~unique_lock()
 	{
-		if (is_locked_)
+		if (m_is_locked)
 			unlock();
 	}
 
@@ -111,20 +112,20 @@ template <BasicLockable Mutex> class unique_lock {
 
 	void unlock()
 	{
-		mutex_->unlock();
-		is_locked_ = false;
+		m_mutex->unlock();
+		m_is_locked = false;
 	}
 
 	void lock()
 	{
-		mutex_->lock();
-		is_locked_ = true;
+		m_mutex->lock();
+		m_is_locked = true;
 	}
 
 	bool try_lock() requires Lockable<Mutex>
 	{
-		if (mutex_->try_lock()) {
-			is_locked_ = true;
+		if (m_mutex->try_lock()) {
+			m_is_locked = true;
 			return true;
 		}
 		return false;
@@ -132,15 +133,15 @@ template <BasicLockable Mutex> class unique_lock {
 
 	mutex_type *release()
 	{
-		auto mut = mutex_;
-		mutex_ = nullptr;
-		is_locked_ = false;
+		auto mut = m_mutex;
+		m_mutex = nullptr;
+		m_is_locked = false;
 		return mut;
 	}
 
 	mutex_type *mutex() const
 	{
-		return mutex_;
+		return m_mutex;
 	}
 
 	explicit operator bool() const
@@ -150,12 +151,12 @@ template <BasicLockable Mutex> class unique_lock {
 
 	bool owns_lock() const
 	{
-		return is_locked_;
+		return m_is_locked;
 	}
 
     private:
-	mutex_type *mutex_;
-	bool is_locked_;
+	mutex_type *m_mutex;
+	bool m_is_locked;
 };
 
 }
