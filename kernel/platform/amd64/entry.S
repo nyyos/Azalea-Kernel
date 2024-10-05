@@ -38,4 +38,5 @@ exit:
   pop %rsi
   pop %rdi
 #endif
-	jmp limine_entry
+  xor %rbp, %rbp
+  jmp limine_entry

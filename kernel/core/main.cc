@@ -29,3 +29,7 @@ void kinit()
 }
 
 }
+
+void operator delete(void *, std::size_t)
+{
+}

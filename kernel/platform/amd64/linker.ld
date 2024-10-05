@@ -49,6 +49,8 @@ SECTIONS
         KEEP(*(.requests_start_marker))
         KEEP(*(.requests))
         KEEP(*(.requests_end_marker))
+        *(.init_array)
+        *(.fini_array)
         . = ALIGN(CONSTANT(MAXPAGESIZE));
         __cpulocals_start = .;
         *(.cpulocals.local_data)

@@ -1,9 +1,15 @@
 kernel_ld_args += [
+    '-static',
+    '-zmax-page-size=0x1000',
+    '-T' + meson.current_source_dir() + '/linker.ld'
+]
+
+kernel_ld_args_relink += [
   '-static',
-    '-Wl,-zmax-page-size=0x1000',
-    '-Wl,-T' + meson.current_source_dir() + '/linker.ld'
+  '-zmax-page-size=0x1000',
+  '-T' + meson.current_source_dir() + '/linker.ld'
 ]
 
 kernel_sources += files('entry.S')
 
-kernel_sources += files('plat.cc')
+kernel_sources += files('plat.cc', 'crash.cc')

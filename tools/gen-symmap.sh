@@ -1,6 +1,3 @@
-#!/bin/bash
+#!/bin/sh
 
-in="$1"
-out="$2"
-
-nm -n "$in" | grep -v '.* [aNUw] ' > "$out"
+nm -nP $1 2>/dev/null | grep '.* [tT] ' | "$(dirname "$0")/gen-symmap.pl" > $2

@@ -4,6 +4,12 @@
 
 namespace core
 {
+namespace port
+{
+/* core::port contains functions that have to be present in every port */
+void crash_system(const char *msg);
+}
+
 struct LocalData;
 
 struct CpuData {
@@ -23,6 +29,6 @@ static inline CpuData &curcpu()
 }
 #endif
 
-void crash(const char *msg);
+void crash(const char *msg, ...);
 
 }
