@@ -1,9 +1,9 @@
-#include "krn/krn.h"
 #include <lk/lock.h>
 #include <lk/spinlock.h>
-#include <lk/string.h>
 #include <log/log.h>
 #include <krn/port.h>
+#include <string>
+#include <krn/krn.h>
 
 namespace core
 {
@@ -15,7 +15,7 @@ extern char __cpulocals_end[];
 void kinit()
 {
 	auto lock = lk::Spinlock();
-	lk::string s;
+	std::string s;
 	s += "teST";
 	printk(INFO "TEST! New kernel in C++ %s\n", s.c_str());
 	printk(INFO "percpu size: %ld\n", __cpulocals_end - __cpulocals_start);
