@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstddef>
-namespace core::mm
+namespace core
 {
 
 void *kmalloc(std::size_t size);

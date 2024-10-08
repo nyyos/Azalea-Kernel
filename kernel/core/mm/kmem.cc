@@ -1,8 +1,8 @@
-#include "log/log.h"
 #include <mm/kmem.h>
 #include <rtl/assert.h>
+#include <log/log.h>
 
-namespace core::mm
+namespace core
 {
 namespace
 {

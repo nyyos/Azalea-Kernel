@@ -1,6 +1,6 @@
 #pragma once
 
-namespace core::vm
+namespace core
 {
 enum {
 	kVmRead = (1 << 0),
