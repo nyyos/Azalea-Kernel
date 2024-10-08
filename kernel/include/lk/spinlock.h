@@ -10,9 +10,7 @@ class Spinlock {
 		is_locked_ = false;
 	}
 
-	~Spinlock()
-	{
-	}
+	constexpr ~Spinlock() = default;
 
 	Spinlock(const Spinlock &) = delete;
 	Spinlock &operator=(const Spinlock &) = delete;

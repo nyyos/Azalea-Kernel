@@ -8,10 +8,6 @@ Object::Object()
 	refcnt = 1;
 }
 
-Object::~Object()
-{
-}
-
 void Object::release()
 {
 	release(0);

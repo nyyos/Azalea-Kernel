@@ -8,7 +8,7 @@ namespace core
 class Object {
     protected:
 	Object();
-	virtual ~Object();
+	constexpr virtual ~Object() = default;
 
     public:
 	/* increment object counter */
