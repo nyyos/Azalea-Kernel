@@ -42,7 +42,7 @@ map_source = custom_target('generate symbols',
 )
 
 c = find_program('c')
-ld = find_program('ld.lld')
+ld = find_program('ld')
 
 map = custom_target('compile symbols',
   input : map_source,

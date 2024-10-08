@@ -31,8 +31,8 @@ namespace
 {
 
 CpuData bsp_cpu;
-[[gnu::used,
-  gnu::section(".cpulocals.local_data")]] LocalData bsp_local_data = {
+
+[[gnu::section(".cpulocals.local_data")]] LocalData bsp_local_data = {
 	.cpu = &bsp_cpu
 };
 
@@ -40,12 +40,16 @@ CpuData bsp_cpu;
 
 extern void kinit();
 
+namespace port
+{
 void plat_first_init();
+}
 
 extern "C" void limine_entry()
 {
-	plat_first_init();
+	port::plat_first_init();
 	bsp_cpu.local_data = &bsp_local_data;
+	bsp_cpu.bsp = true;
 
 	printk(INFO "Azalea//limine-" ARCHNAME " (Built on: " __DATE__
 		    " " __TIME__ ")\n");

@@ -36,7 +36,7 @@ SECTIONS
     /* C++ is a language that allows for global constructors. In order to obtain the */
     /* address of the ".init_array" section we need to define a symbol for it. */
     .init_array : {
-        __init_array = .;
+        __init_array_start = .;
         *(.init_array .init_array.*)
         __init_array_end = .;
     } :rodata
@@ -49,13 +49,11 @@ SECTIONS
         KEEP(*(.requests_start_marker))
         KEEP(*(.requests))
         KEEP(*(.requests_end_marker))
-        *(.init_array)
-        *(.fini_array)
         . = ALIGN(CONSTANT(MAXPAGESIZE));
-        __cpulocals_start = .;
-        *(.cpulocals.local_data)
+        PROVIDE_HIDDEN(__cpulocals_start = .);
+        KEEP(*(.cpulocals.local_data))
         *(.cpulocals)
-        __cpulocals_end = .;
+        PROVIDE_HIDDEN(__cpulocals_end = .);
     } :data
 
     /* NOTE: .bss needs to be the last thing mapped to :data, otherwise lots of */

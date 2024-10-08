@@ -14,7 +14,7 @@ void crash(const char *msg, ...)
 
 	char buffer[1024];
 	buffer[sizeof buffer - 1] = '\0';
-	int chars = npf_vsnprintf(buffer, sizeof buffer - 1, msg, va);
+	npf_vsnprintf(buffer, sizeof buffer - 1, msg, va);
 
 	va_end(va);
 

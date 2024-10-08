@@ -10,6 +10,10 @@ kernel_ld_args_relink += [
   '-T' + meson.current_source_dir() + '/linker.ld'
 ]
 
-kernel_sources += files('entry.S')
+kernel_sources += files('entry.S', 'gdt.S')
 
-kernel_sources += files('plat.cc', 'crash.cc')
+kernel_sources += files(
+  'plat.cc', 
+  'crash.cc', 
+  'gdt.cc'
+)

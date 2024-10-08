@@ -15,6 +15,8 @@ struct LocalData;
 struct CpuData {
 	LocalData *local_data;
 
+	bool bsp;
+
 	int num;
 };
 
